@@ -155,6 +155,7 @@ const menuScroll = function () {
     behavior: "smooth",
     block: "start"
   })
+  menuSlide()
 }
 document.querySelectorAll('.menuHeader ul li').forEach((btn) => {
   btn.addEventListener('click', menuScroll)
