@@ -1,4 +1,22 @@
-// EFECT MENU
+// HEADER PHOTO SLIDER 
+let changeIndex = 0;
+
+const bgiHeader = document.querySelector(".videoHeader .bgiMobile")
+const bgiBoard = ["pic/banner img/banner1.webp", "pic/banner img/banner2.webp", "pic/banner img/banner3.webp", "pic/banner img/banner4.webp"];
+
+function bannerAnimation() {
+  changeIndex++
+  if (changeIndex == 4) {
+    changeIndex = 0
+  }
+
+  bgiHeader.src = bgiBoard[changeIndex];
+
+}
+
+setInterval(bannerAnimation, 4000);
+
+// MENU SLIDER
 
 const menuOpen = document.querySelector('.menuHeader .fa-bars')
 const menuClose = document.querySelector('.menuHeader .fa-times')
@@ -16,6 +34,16 @@ function menuSlide() {
 
 menuIconBox.addEventListener('click', menuSlide)
 
+// PHONE AND MAIL SLIDER ON DESKTOP EFFECTS
+
+const contactSlideDesktop = function () {
+  const btnClass = this.parentElement.className
+  const slidingElement = document.querySelector(`a.${btnClass}`)
+  slidingElement.classList.toggle('active')
+
+}
+
+document.querySelectorAll('div.contactBtn').forEach((btn) => btn.addEventListener("click", contactSlideDesktop))
 
 // MY PHOTO EFFECT
 
@@ -180,3 +208,50 @@ function offersEffect() {
 }
 
 window.addEventListener('scroll', offersEffect)
+
+// CHECK IF MOBILE VERSION
+let resizeCheck = false
+const bannerVideo = document.querySelector('video.videoDD');
+const phoneBtn = document.querySelector('li.phone')
+const mailBtn = document.querySelector('li.mail')
+
+const mobileViewport = window.matchMedia("(max-width: 700px)")
+const mobileLandscapeViewport = window.matchMedia("(max-width: 916px) and (max-height: 500px) and (orientation: landscape)")
+
+const checkIfMobile = (mobPortrait, mobLandscape) => {
+
+  if (mobLandscape || mobPortrait) {
+    if (resizeCheck) {
+
+      mobileView()
+      resizeCheck = false
+    } else {
+      return
+    }
+  } else {
+    if (!resizeCheck) {
+
+      desktopView()
+      resizeCheck = true
+    } else { return }
+  }
+}
+
+const mobileView = () => {
+  bannerVideo.removeAttribute("src")
+  phoneBtn.innerHTML = '<div class="contactBtn"> <a href=tel:777-777-777> telefon <i class="fa-solid fa-phone"></i></a> </div>'
+  mailBtn.innerHTML = '<div class="contactBtn"> <a href="mailto:lorem@ipsum.com"> mail <i class="fa-regular fa-envelope"></i></a> </div>'
+}
+
+const desktopView = () => {
+  bannerVideo.setAttribute("src", 'video/banner.mp4')
+  phoneBtn.innerHTML = `<div class="contactBtn"> telefon <i class="fa-solid fa-phone"></i> <a class="phone slider" href=tel:777-777-777>777-777-777</a> </div>`
+  mailBtn.innerHTML = `<div class="contactBtn"> mail <i class="fa-regular fa-envelope"></i> <a class="mail slider" href="mailto:lorem@ipsum.com">lorem@ipsum.com</a> </div>`
+  //repeated because it wont work
+  document.querySelectorAll('div.contactBtn').forEach((btn) => btn.addEventListener("click", contactSlideDesktop))
+}
+
+//listener
+window.addEventListener("resize", () => checkIfMobile(mobileViewport.matches, mobileLandscapeViewport.matches))
+//init when get on site
+checkIfMobile(mobileViewport.matches, mobileLandscapeViewport.matches)
